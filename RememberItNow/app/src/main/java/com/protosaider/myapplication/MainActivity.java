@@ -8,19 +8,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements OnClickListener{
+public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "Logger";
+    Button btnMain;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreateMain");
-        //Button btnMain = (Button) findViewById(R.id.);
-        //btnMain.setOnClickListener(this);
+        btnMain = (Button) findViewById(R.id.btn_main);
+        btnMain.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Toast.makeText(MainActivity.this, spinner.getSelectedItem().toString() + " selected", Toast.LENGTH_LONG).show();
+            }
+        });
+        spinner = (Spinner) findViewById(R.id.spinner_main);
     }
 
     @Override
@@ -50,25 +61,4 @@ public class MainActivity extends AppCompatActivity implements OnClickListener{
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onClick(View v)
-    {
-//для нескольких кнопок = v.getId => switch
-        Toast.makeText(this, "onCLick", Toast.LENGTH_LONG).show();
-    }
 }
-
-/*
-Button btnMain;
-
-    Button btnMain = (Button) findViewById(R.id.);
-
-    btnMain.setOnClickListener(new OnClickListener() {
-    @Override
-    public void onClick(View v)
-    {
-    }
-    };)
-}
-*/

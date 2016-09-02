@@ -8,11 +8,36 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.protosaider.myapplication.MainActivity">
+    tools:context="com.protosaider.myapplication.MainActivity"
+    android:id="@+id/relative_layout_main">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/main_text_portrait" />
+        android:text="@string/main_text_portrait"
+        android:layout_alignParentStart="true"
+        android:textSize="16sp"
+        android:id="@+id/text_view_main"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_main"
+        android:layout_marginTop="8dp"
+        android:id="@+id/spinner_main"
+        android:entries="@array/spinner_main"
+        >
+    </Spinner>
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/btn_main"
+        android:text="@string/btn_main"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        >
+    </Button>
 
 </RelativeLayout>
