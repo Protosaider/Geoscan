@@ -16,13 +16,16 @@ public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "Logger";
     Button btnMain;
+    Button btnLaunch;
     Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Log.d(TAG, "onCreateMain");
+
         btnMain = (Button) findViewById(R.id.btn_main);
         btnMain.setOnClickListener(new OnClickListener() {
             @Override
@@ -31,7 +34,26 @@ public class MainActivity extends AppCompatActivity{
                 Toast.makeText(MainActivity.this, spinner.getSelectedItem().toString() + " selected", Toast.LENGTH_LONG).show();
             }
         });
+
         spinner = (Spinner) findViewById(R.id.spinner_main);
+
+        btnLaunch = (Button) findViewById(R.id.btn_launch);
+        btnLaunch.setOnClickListener(new OnClickListener() {
+           @Override
+            public void onClick(View v)
+           {
+               switch ((int)spinner.getSelectedItemId()) {
+                   case 0:
+                       Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                       startActivity(intent);//вызов активити
+                       break;
+                   case 1:
+                       //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                       //startActivity(intent);//вызов активити
+                       break;
+               }
+           }
+        });
     }
 
     @Override

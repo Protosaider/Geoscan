@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/maps_menu"
+        >
+        <item android:id="@+id/maps_menu_anim"
+            android:title="@string/maps_menu_anim"
+            android:orderInCategory="1">
+        </item>
+        <item android:id="@+id/maps_menu_clean"
+            android:title="@string/maps_menu_clean"
+            android:orderInCategory="2">
+        </item>
+    </group>
+</menu>
