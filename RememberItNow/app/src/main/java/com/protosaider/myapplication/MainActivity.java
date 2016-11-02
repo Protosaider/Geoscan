@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "Logger";
     Button btnMain;
-    Button btnLaunch;
     Spinner spinner;
 
     @Override
@@ -32,28 +31,12 @@ public class MainActivity extends AppCompatActivity{
             public void onClick(View v)
             {
                 Toast.makeText(MainActivity.this, spinner.getSelectedItem().toString() + " selected", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);//вызов активити
             }
         });
 
         spinner = (Spinner) findViewById(R.id.spinner_main);
-
-        btnLaunch = (Button) findViewById(R.id.btn_launch);
-        btnLaunch.setOnClickListener(new OnClickListener() {
-           @Override
-            public void onClick(View v)
-           {
-               switch ((int)spinner.getSelectedItemId()) {
-                   case 0:
-                       Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                       startActivity(intent);//вызов активити
-                       break;
-                   case 1:
-                       //Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                       //startActivity(intent);//вызов активити
-                       break;
-               }
-           }
-        });
     }
 
     @Override
@@ -62,19 +45,12 @@ public class MainActivity extends AppCompatActivity{
         return super.onCreateOptionsMenu(menu);
     }
 
-    /*@Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // TODO Auto-generated method stub
-        // пункты меню с ID группы = 1 видны, если в CheckBox стоит галка
-        menu.setGroupVisible(1, chb.isChecked());
-        return super.onPrepareOptionsMenu(menu);
-    } */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.main_menu_settings:
-               Intent intent = new Intent(this, SettingsActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);//вызов активити
                 break;
             default:

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">My Application</string>
-    <string name="main_text_landscape">Hello world landscape type</string>
-    <string name="main_text_portrait">Hello world portrait type</string>
+    <string name="main_text_landscape">Choose cartographic service</string>
+    <string name="main_text_portrait">Choose cartographic service</string>
     <string name="main_menu_about">About</string>
     <string name="main_menu_exit">Exit</string>
     <string name="main_menu_settings">Settings</string>

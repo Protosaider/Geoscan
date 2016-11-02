@@ -40,19 +40,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     public ArrayList<LatLng> latLngArrayList;
-    //Marker addedMarker;
     Polyline polyline;
 
     Bitmap airship;
-    int imageHeight;
-    int imageWidth;
-    String imageType;
-    //Marker animMarker;
-    //ImageView mTargetImageView;
-
-    Handler mHandler;
-    final int START_ANIM = 0;
-    final int END_ANIM = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,21 +53,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         latLngArrayList = new ArrayList<LatLng>(10);
-
-       /* mHandler = new Handler() {
-            public void handleMessage(Message msg){
-                switch (msg.what)
-                {
-                    case START_ANIM:
-                        Toast.makeText(MapsActivity.this, "start animation" + msg.what, Toast.LENGTH_SHORT).show();
-                        Anim(airship, latLngArrayList.get(0));
-                        break;
-                    case END_ANIM:
-                        Toast.makeText(MapsActivity.this, "end animation" + msg.what + "agr1 = " + msg.arg1 + "agr2 = " + msg.arg2, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        }; */
 
     }
 
@@ -100,7 +75,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 polyline = mMap.addPolyline(new PolylineOptions().geodesic(true));
                 break;
             case R.id.maps_menu_anim:
-                //startAnimation(latLngArrayList.get(0), latLngArrayList.get(1));
                 Animate();
                 break;
         }
@@ -109,7 +83,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void Animate() {
 
-        if (latLngArrayList.isEmpty())
+        if (latLngArrayList.size() < 2)
             return;
 
         airship = BitmapFactory.decodeResource(getResources(), R.drawable.airship60);
@@ -119,12 +93,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .position(latLngArrayList.get(0)));
         Log.d(TAG, "in animate");
 
-        //startAnimation(animMarker, latLngArrayList.get(0), latLngArrayList.get(1));
-
+        startAnimation(animMarker, latLngArrayList.get(0), latLngArrayList.get(1));
+        Log.d(TAG, "in animate after start anim");
+        /*
         for (int i = 0; i < latLngArrayList.size() - 1;) {
             startAnimation(animMarker, latLngArrayList.get(i), latLngArrayList.get(i + 1));
             Log.d(TAG, "in animate after start anim");
-        }
+        }*/
     }
 
 
@@ -154,88 +129,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 else
                 {
                     Log.d(TAG, "!!! t >= 1.0 (postDelayed)");
+	                animMarker.remove();
                 }
             }
         });
     }
 
-   /* public void startAnimation(LatLng startLatLng, LatLng toPosition) {
-
-        Thread thread = new Thread(new Runnable() {
-            Message msg;
-
-            public void run() {
-                try {
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inJustDecodeBounds = true; //avoids memory allocation, returning null for the bitmap object but setting outWidth, outHeight and outMimeType.
-                    BitmapFactory.decodeResource(getResources(), R.drawable.airship60, options);
-                    imageHeight = options.outHeight;
-                    imageWidth = options.outWidth;
-                    imageType = options.outMimeType;
-
-                    options.inJustDecodeBounds = false;
-                    airship = BitmapFactory.decodeResource(getResources(), R.drawable.airship60, options);
-
-                    mHandler.sendEmptyMessage(START_ANIM);
-
-                    final long start = SystemClock.uptimeMillis();
-                    final long duration = 1500;
-
-                    final Interpolator interpolator = new LinearInterpolator();
-
-                    long elapsed = SystemClock.uptimeMillis() - start;
-                    float t = interpolator.getInterpolation((float) elapsed
-                            / duration);
-
-                    double lng = t * toPosition.longitude + (1 - t)
-                            * startLatLng.longitude;
-                    double lat = t * toPosition.latitude + (1 - t)
-                            * startLatLng.latitude;
-
-                    markerAirship.setPosition(new LatLng(lat, lng));
-
-                    if (t < 1.0) {
-                        // Post again 16ms later.
-                        mHandler.sendEmptyMessage(START_ANIM);
-                        mHandler.postDelayed(this, 16);
-                    }
-
-                    TimeUnit.SECONDS.sleep(3);
-
-
-                    msg = mHandler.obtainMessage(END_ANIM, 10, 0);
-                    mHandler.sendMessage(msg);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-    }
-
-    public Marker Anim(Bitmap bmp, LatLng latLng) {
-        return mMap.addMarker(new MarkerOptions().position(latLng)
-                .icon(BitmapDescriptorFactory.fromBitmap(bmp))
-                .anchor(0.5f, 0.5f));
-
-    }
-*/
 
     @Override
     public void onMapClick(LatLng point) {
-        //addedMarker = new MarkerOptions().position(point).title("checking");
         mMap.addMarker(new MarkerOptions().position(point).title("checking"));
-        //markerArrayList.add(mMap.addMarker(new MarkerOptions().position(point).title("checking")));
-        //if (!markerArrayList.isEmpty())
 
         latLngArrayList.add(point);
         Toast.makeText(MapsActivity.this, "success" + point.toString(), Toast.LENGTH_LONG).show();
             polyline.setPoints(latLngArrayList);
-            //polyline = mMap.addPolyline(new PolylineOptions().geodesic(true));
-            //if (polyline == null)
-
     }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -249,14 +158,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        //!!!
-        //setMapType
-        // Add a marker in Sydney and move the camera
         mMap.setOnMapClickListener(this);
         mMap.setPadding(0, 300, 300, 0);
-        LatLng sydney = new LatLng(-34, 151); //широта\долгота
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         polyline = mMap.addPolyline(new PolylineOptions().geodesic(true));
     }
 }

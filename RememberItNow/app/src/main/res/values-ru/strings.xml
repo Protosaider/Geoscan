@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Мое приложение</string>
-    <string name="main_text_landscape">Здравствуй мир панорамный тип</string>
-    <string name="main_text_portrait">Здравствуй мир портретный тип</string>
+    <string name="main_text_landscape">Выберите картографический сервис</string>
+    <string name="main_text_portrait">Выберите картографический сервис</string>
     <string name="main_menu_settings">Настройки</string>
     <string name="main_menu_exit">Выход</string>
     <string name="main_menu_about">О программе</string>
