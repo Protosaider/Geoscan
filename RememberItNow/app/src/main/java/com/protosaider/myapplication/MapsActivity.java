@@ -34,15 +34,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener, CallbackAttempt {
 
     private static final String TAG = "Logger";
+	private MarkerAnimation markerAnimation;
 
     private GoogleMap mMap;
     public ArrayList<LatLng> latLngArrayList;
     Polyline polyline;
 
     Bitmap airship;
+	Marker animMarker;
+	boolean isAnimate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,19 +72,67 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         {
             case R.id.maps_menu_clean:
                 polyline.remove();
-                //for (LatLng latLng : latLngArrayList){}
                 latLngArrayList.clear();
                 mMap.clear();
                 polyline = mMap.addPolyline(new PolylineOptions().geodesic(true));
+	            Log.d(TAG, "All clean again!");
                 break;
             case R.id.maps_menu_anim:
-                Animate();
+                startAnimate();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void Animate() {
+	public void startAnimate() {
+
+		if (!isAnimate) {
+			if (latLngArrayList.size() < 2)
+				return;
+			Log.d(TAG, "in start anim");
+
+			isAnimate = true;
+
+			airship = BitmapFactory.decodeResource(getResources(), R.drawable.airship60);
+
+			animMarker = mMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f)
+					.icon(BitmapDescriptorFactory.fromBitmap(airship))
+					.position(latLngArrayList.get(0)));
+
+			Animate(1);
+		}
+	}
+
+	public void Animate(final int counter) {
+
+		Log.d(TAG, "in animate");
+		Handler mHandler = new Handler();
+		markerAnimation = new MarkerAnimation(this, counter);
+		mHandler.post(new Runnable() {
+			@Override
+			public void run() {
+				markerAnimation.likeAnimate(animMarker, latLngArrayList.get(counter - 1), latLngArrayList.get(counter));
+			}
+		});
+	}
+
+	public void endAnimate() {
+		animMarker.remove();
+		isAnimate = false;
+	}
+
+	public void callback(int i){
+		Log.d(TAG, "Callback is working!");
+		if (i < latLngArrayList.size()) {
+			Animate(i);
+		}
+		else {
+			endAnimate();
+		}
+	}
+
+
+	/*public void Animate() {
 
         if (latLngArrayList.size() < 2)
             return;
@@ -93,13 +144,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .position(latLngArrayList.get(0)));
         Log.d(TAG, "in animate");
 
-        startAnimation(animMarker, latLngArrayList.get(0), latLngArrayList.get(1));
-        Log.d(TAG, "in animate after start anim");
-        /*
-        for (int i = 0; i < latLngArrayList.size() - 1;) {
-            startAnimation(animMarker, latLngArrayList.get(i), latLngArrayList.get(i + 1));
+        //startAnimation(animMarker, latLngArrayList.get(0), latLngArrayList.get(1));
+        //Log.d(TAG, "in animate after start anim");
+        MarkerAnimation.MarkerSetGetLatLng mark = new MarkerAnimation.MarkerSetGetLatLng(animMarker);
+        //MarkerAnimation.likeAnimate(animMarker, latLngArrayList.get(0), latLngArrayList.get(1), mark);
+        for (int i = 1; i < latLngArrayList.size(); i++) {
+            MarkerAnimation.likeAnimate(animMarker, latLngArrayList.get(i-1), latLngArrayList.get(i), mark);
+            mark.setLatLng(animMarker.getPosition());
             Log.d(TAG, "in animate after start anim");
-        }*/
+        }
     }
 
 
@@ -134,15 +187,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
-
+*/
 
     @Override
     public void onMapClick(LatLng point) {
         mMap.addMarker(new MarkerOptions().position(point).title("checking"));
 
         latLngArrayList.add(point);
-        Toast.makeText(MapsActivity.this, "success" + point.toString(), Toast.LENGTH_LONG).show();
-            polyline.setPoints(latLngArrayList);
+        Toast.makeText(MapsActivity.this, "success " + point.toString(), Toast.LENGTH_LONG).show();
+        polyline.setPoints(latLngArrayList);
+
+        Log.d(TAG, "set marker");
     }
 
     /**
