@@ -215,6 +215,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.setOnMapClickListener(this);
         mMap.setPadding(0, 300, 300, 0);
+	    mMap.addMarker(new MarkerOptions().position(new LatLng(30, 240)).title("check"));
         polyline = mMap.addPolyline(new PolylineOptions().geodesic(true));
     }
 }

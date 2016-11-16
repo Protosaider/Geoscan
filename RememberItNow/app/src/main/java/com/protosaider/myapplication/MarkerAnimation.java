@@ -11,6 +11,9 @@ import com.google.android.gms.maps.model.Marker;
 
 import javax.xml.datatype.Duration;
 
+import static java.lang.Math.min;
+import static java.lang.Math.signum;
+
 /**
  * Created by Protosaider on 03.11.2016.
  */
@@ -76,8 +79,32 @@ public class MarkerAnimation {
 
 			mark = new MarkerSetGetLatLng(animMarker);
 
+			LatLng check;
+			ValueAnimator valueAnimatorLongitude;
+
+			if (signum(startLatLng.longitude) + signum(endLatLng.longitude) == 0)
+			{
+				Log.d(TAG, "signum 1 = " + signum(startLatLng.longitude) + " signum 2 = " + signum(endLatLng.longitude) + " total = " + (signum(startLatLng.longitude) + signum(endLatLng.longitude) == 0));
+				if (startLatLng.longitude == min(startLatLng.longitude, endLatLng.longitude))
+				{
+					//check = new LatLng(startLatLng.latitude, startLatLng.longitude + 360);
+					valueAnimatorLongitude = ValueAnimator.ofFloat((float) startLatLng.longitude + 360, (float) endLatLng.longitude);
+					//Log.d(TAG, "check longitude1 = " + check.longitude);
+				}
+				else
+				{
+					//check = new LatLng(endLatLng.latitude, endLatLng.longitude + 360);
+					valueAnimatorLongitude = ValueAnimator.ofFloat((float) startLatLng.longitude, (float) endLatLng.longitude + 360);
+					//Log.d(TAG, "check longitude2 = " + check.longitude);
+				}
+			}
+			else
+			{
+				valueAnimatorLongitude = ValueAnimator.ofFloat((float) startLatLng.longitude, (float) endLatLng.longitude);
+			}
+
 			ValueAnimator valueAnimatorLatitude = ValueAnimator.ofFloat((float) startLatLng.latitude, (float) endLatLng.latitude);
-			ValueAnimator valueAnimatorLongitude = ValueAnimator.ofFloat((float) startLatLng.longitude, (float) endLatLng.longitude);
+			//ValueAnimator valueAnimatorLongitude = ValueAnimator.ofFloat((float) startLatLng.longitude, (float) endLatLng.longitude);
 
 			valueAnimatorLatitude.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 				@Override
