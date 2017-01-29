@@ -29,12 +29,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.kml.KmlLayer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener, CallbackAttempt {
+import ir.sohreco.androidfilechooser.ExternalStorageNotAvailableException;
+import ir.sohreco.androidfilechooser.FileChooserDialog;
+
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, OnMapClickListener, CallbackAttempt, FileChooserDialog.ChooserListener {
 
     private static final String TAG = "Logger";
 	private MarkerAnimation markerAnimation;
@@ -46,6 +50,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     Bitmap airship;
 	Marker animMarker;
 	boolean isAnimate = false;
+
+	KmlLayer kmlLayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +86,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.maps_menu_anim:
                 startAnimate();
                 break;
+	        case R.id.maps_menu_load:
+		        /*Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);*/
+		        FileChooserDialog.Builder builder = new FileChooserDialog.Builder(FileChooserDialog.ChooserType.FILE_CHOOSER, this);
+		        builder.setFileFormats(new String[]{".kml"});
+		        try {
+			        builder.build().show(getSupportFragmentManager(), null);
+		        } catch (ExternalStorageNotAvailableException e) {
+			        e.printStackTrace();
+		        }
+		        break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+	//implement method of FileChooserDialog.ChooserListener
+	public void onSelect(String path)
+	{
+		//d;
+	}
 
 	public void startAnimate() {
 

@@ -10,5 +10,9 @@
             android:title="@string/maps_menu_clean"
             android:orderInCategory="2">
         </item>
+        <item android:id="@+id/maps_menu_load"
+            android:title="@string/maps_menu_load"
+            android:orderInCategory="3">
+        </item>
     </group>
 </menu>
