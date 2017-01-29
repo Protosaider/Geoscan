@@ -12,6 +12,7 @@
     <string name="btn_main">Check Selected Item</string>
     <string name="maps_menu_clean">Clean</string>
     <string name="maps_menu_anim">Start Animation</string>
+    <string name="maps_menu_load">Load KML</string>
 
     <string-array name="spinner_main">
         <item>Google Maps</item>
